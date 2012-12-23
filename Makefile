@@ -12,6 +12,10 @@ help:
 	@echo 'help     Print this message.';
 	@echo 'install  Install the program. Installs into PREFIX/bin. The';
 	@echo '         default PREFIX is '\''${PREFIX}'\''.';
+	@echo 'test     Run the tests in the t/ directory.';
 
 install:
 	install "${PROGRAM}" "${PREFIX}/bin/"
+
+test:
+	cd t && ${MAKE}
