@@ -1,7 +1,23 @@
 #!/bin/bash
 
+no_old=0;
+
+if [ ! -s COPYRIGHT ]; then
+    echo 'No copyright found. Create a COPYRIGHT file.' 1>&2;
+    exit 1;
+fi;
+
+if [ ! -s .COPYRIGHT.old ]; then
+    no_old=1;
+    echo 'Note: no old copyright found. Create a .COPYRIGHT.old. ' \
+            'Continuing without it...' 1>&2;
+fi;
+
 cr_lines="`wc -l COPYRIGHT | awk '{print $1}'`";
-old_cr_lines="`wc -l .COPYRIGHT.old | awk '{print $1}'`";
+
+if [ "${no_old}" == 0 ]; then
+    old_cr_lines="`wc -l .COPYRIGHT.old | awk '{print $1}'`";
+fi;
 
 function append_contents
 {
@@ -82,6 +98,10 @@ function main
 function old_copyright_exists
 {
     local file="$1";
+
+    if [ "${no_old}" == 1 ]; then
+        return 1;
+    fi;
 
     [ "`head -n "${old_cr_lines}" "${file}"`" == "`cat .COPYRIGHT.old`" ];
 
