@@ -1,0 +1,43 @@
+DISCLAIMER: USE AT OWN RISK.
+
+apply-copyright is hack of a bash script that is used to update copyright
+headers in source files. I have several versions of this program kicking
+around, typically with hard-coded details for each project. This [tiny]
+project is an attempt to centralize the logic for updating these copyright
+messages to make it easier to maintain both this program and the copyright
+headers. Eventually it might even scan an entire directory tree and
+identify out of date headers (i.e., ~/src). Since most of my projects are
+now using out of date headers I imagine that would be extremely useful. It
+would also be useful to update the dates automatically.
+
+Currently it only supports one, copyright message and that one has
+hard-coded comment syntax. The targetted source files currently are likely
+C or C++, but I have other versions of this program that target e.g., Perl
+source files. I imagine we will eventually need a project specific
+configuration file. At that point I may opt to move this program into
+something a little bit more robust, like Perl, but bash will suffice for
+now.
+
+== How Does It Work ==
+
+COPYRIGHT
+.COPYRIGHT.old
+
+Basically you create a COPYRIGHT file containing the header for your
+source files. In order to update one you need to have a .COPYRIGHT.old
+file that contains a previous version of the copyright. When you run
+apply-copyright, it finds all matching source files beneath the current
+working directory and attempts to add or update a copyright header.
+
+Matching the top of source files with either copyright file is how
+apply-copyright determines whether or not a source file in your project
+currently has a copyright. You definitely want to be using source control
+and you probably also want to make sure that your working directory isn't
+dirty. Worst case you should end up with two copyright headers, but I make
+no guarantees that that is the really the worst that can happen. Probably
+should not only commit all changes, but push them remotely too just in
+case apply-copyright /somehow/ nukes your entire project tree[1]. ;)
+
+[1] Though it has certainly not been designed to. :)
+
+# vim: set nocin fo+=a
