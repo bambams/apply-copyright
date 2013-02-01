@@ -79,9 +79,17 @@ function copyright_exists
 function main
 {
     local command="$1"
+    local file_list=./.copyright-files;
 
-    for file in `find -name \*.c -o -name \*.cpp -o -name \*.h \
-            -o -name \*.hpp`;
+    if [ ! -f "$file_list" ]; then
+        echo "'$file_list' does not exist." 1>&2;
+        exit 1;
+    elif [ ! -x "$file_list" ]; then
+        echo "'$file_list' is not executable." 1>&2;
+        exit 1;
+    fi;
+
+    for file in `$file_list`;
     do
         if ! copyright_exists "${file}"; then
             if old_copyright_exists "${file}"; then
