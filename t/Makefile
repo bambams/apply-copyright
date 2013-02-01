@@ -3,7 +3,7 @@
 all: test-clean
 
 clean:
-	git checkout src/foo.c src/bar.c src/baz.c
+	git checkout src/foo.c src/bar.c src/baz.c src/bak.sh
 
 test: clean
 	../bin/apply-copyright
