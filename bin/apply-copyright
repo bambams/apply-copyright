@@ -24,7 +24,12 @@ function append_contents
     local file="${1}"
     local orig="${1}.orig"
 
-    cat "${orig}" >> "${file}"
+    if shebang_exists "$orig"; then
+        sed -ne'2,$p' "${orig}" >> "${file}";
+    else
+        cat "${orig}" >> "${file}"
+    fi;
+
     check_status_fatal ${?} "Failed to append original contents."
 }
 
@@ -40,9 +45,16 @@ function backup_orig
 function begin_with_copyright
 {
     local file="${1}"
+    local orig="${file}.orig"
 
-    cat COPYRIGHT 1> "${file}";
+    if shebang_exists "$orig"; then
+        sed -ne1p "${orig}" > "${file}";
 
+        check_status_fatal ${?} \
+                "Failed to restore shebang to \'${file}\'."
+    fi;
+
+    cat COPYRIGHT 1>> "${file}";
     check_status_fatal ${?} "Failed to initialize \'${file}\' with copyright."
 }
 
@@ -145,7 +157,11 @@ function remove_old_copyright
 {
     local file="${1}";
 
-    sed -i -e "1,${old_cr_lines}d" "${file}";
+    if shebang_exists "$file"; then
+        sed -i -e "2,$((old_cr_lines+1))d" "${file}";
+    else
+        sed -i -e "1,${old_cr_lines}d" "${file}";
+    fi;
 
     check_status_fatal ${?} "Failed to remove old copyright from ${file}";
 }
