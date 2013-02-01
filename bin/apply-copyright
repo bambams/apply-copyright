@@ -13,10 +13,10 @@ if [ ! -s .COPYRIGHT.old ]; then
             'Continuing without it...' 1>&2;
 fi;
 
-cr_lines="`wc -l COPYRIGHT | awk '{print $1}'`";
+cr_lines="`wc -l < COPYRIGHT`";
 
 if [ "${no_old}" == 0 ]; then
-    old_cr_lines="`wc -l .COPYRIGHT.old | awk '{print $1}'`";
+    old_cr_lines="`wc -l < .COPYRIGHT.old`";
 fi;
 
 function append_contents
@@ -144,7 +144,7 @@ function remove_backup
 function remove_old_copyright
 {
     local file="${1}";
-    local num_lines="`wc -l .COPYRIGHT.old | awk '{print $1}'`";
+    local num_lines="`wc -l < .COPYRIGHT.old`";
 
     check_status_fatal ${?} "Failed to count lines in old copyright.";
 
