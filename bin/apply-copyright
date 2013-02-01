@@ -144,11 +144,8 @@ function remove_backup
 function remove_old_copyright
 {
     local file="${1}";
-    local num_lines="`wc -l < .COPYRIGHT.old`";
 
-    check_status_fatal ${?} "Failed to count lines in old copyright.";
-
-    sed -i -e "1,${num_lines}d" "${file}";
+    sed -i -e "1,${old_cr_lines}d" "${file}";
 
     check_status_fatal ${?} "Failed to remove old copyright from ${file}";
 }
