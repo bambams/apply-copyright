@@ -71,9 +71,24 @@ function copyright_exists
 {
     local file="$1";
 
-    [ "`head -n "${cr_lines}" "${file}"`" == "`cat COPYRIGHT`" ];
+    [ "`get_head "${cr_lines}" "${file}"`" == "`cat COPYRIGHT`" ];
 
     return ${?};
+}
+
+function get_head
+{
+    local cr_lines="$1";
+    local file="$2";
+
+    if shebang_exists "$file"; then
+        local head="`head -n "$((cr_lines+1))" "${file}" | \
+                tail -n "${cr_lines}"`";
+    else
+        local head="`head -n "${cr_lines}" "${file}"`";
+    fi;
+
+    echo "$head";
 }
 
 function main
@@ -111,7 +126,8 @@ function old_copyright_exists
         return 1;
     fi;
 
-    [ "`head -n "${old_cr_lines}" "${file}"`" == "`cat .COPYRIGHT.old`" ];
+    [ "`get_head "${old_cr_lines}" "${file}"`" == \
+            "`cat .COPYRIGHT.old`" ];
 
     return ${?};
 }
@@ -135,6 +151,15 @@ function remove_old_copyright
     sed -i -e "1,${num_lines}d" "${file}";
 
     check_status_fatal ${?} "Failed to remove old copyright from ${file}";
+}
+
+function shebang_exists
+{
+    local file="${1}";
+
+    sed -ne1p "$file" | grep '^#!';
+
+    return ${?};
 }
 
 main "${0}" "${@}"
