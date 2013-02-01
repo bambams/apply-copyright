@@ -1,3 +1,4 @@
+#!/bin/bash
 /*
  * Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
  * lorem purus, dictum pretium viverra vitae, fermentum at diam. Donec vel
@@ -8,7 +9,5 @@
  * nisl viverra fringilla sit amet rutrum orci. Morbi eu consequat magna.
  * Mauris aliquam risus et lorem eleifend ac sagittis erat gravida.
  */
-
-#!/bin/bash
 
 echo hi!
