@@ -157,7 +157,7 @@ function shebang_exists
 {
     local file="${1}";
 
-    sed -ne1p "$file" | grep '^#!';
+    sed -ne1p "$file" | grep -q '^#!';
 
     return ${?};
 }
